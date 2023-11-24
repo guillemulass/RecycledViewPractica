@@ -1,17 +1,24 @@
 package com.gmulbat1301.recycledviewpractica.screens
 
+import android.widget.Toast
 import com.gmulbat1301.recycledviewpractica.R
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -43,23 +50,27 @@ fun getSuperheroes(): List<Superhero> {
 fun SuperHeroView() {
     val context = LocalContext.current
 
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(200.dp),
+        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp)
     ) {
         items(getSuperheroes()) {
-            ItemHero(superhero = it)
+            ItemHero(superhero = it,
+                onItemSelected = { Toast.makeText(context,it.realName,Toast.LENGTH_SHORT)})
         }
     }
 
 }
 
 @Composable
-fun ItemHero(superhero: Superhero) {
+fun ItemHero(superhero: Superhero,onItemSelected: (Superhero) ->
+Unit) {
 
     Card (
         border = BorderStroke(2.dp, Color.Red),
         modifier = Modifier
             .width(200.dp)
+            .clickable { onItemSelected(superhero) }
     ){
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
