@@ -1,27 +1,92 @@
 package com.gmulbat1301.recycledviewpractica.screens
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.runtime.Composable
 import com.gmulbat1301.recycledviewpractica.R
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
-data class Superhero(val superheroName: String, val realName: String, val publisher: String, @DrawableRes var photo: Int){
+data class Superhero(val superheroName: String, val realName: String, val publisher: String, @DrawableRes var photo: Int)
 
-    fun getSuperheroes(){
+fun getSuperheroes(): List<Superhero> {
+    return listOf(
+        Superhero("Spiderman", "Petter Parker", "Marvel", R.drawable.spiderman),
+        Superhero("Wolverine", "James Howlett", "Marvel", R.drawable.logan),
+        Superhero("Batman", "Bruce Wayne", "DC", R.drawable.batman),
+        Superhero("Thor", "Thor Odinson", "Marvel", R.drawable.thor),
+        Superhero("Flash", "Jay Garrick", "DC", R.drawable.flash),
+        Superhero("Green Lantern", "Alan Scott", "DC", R.drawable.green_lantern),
+        Superhero("Wonder Woman", "Princess Diana", "DC", R.drawable.wonder_woman)
+    )
+}
 
-        val superheroList = mutableListOf("Spiderman", "Petter Parker", "Marvel", R.drawable.spiderman)
+@Composable
+fun SuperHeroView() {
+    val context = LocalContext.current
 
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(getSuperheroes()) {
+            ItemHero(superhero = it)
+        }
     }
 
 }
 
 @Composable
-fun SuperHeroView() {
-    LazyRow() {
-        items(getSuperheroes()) {
-            ItemHero(superhero = it)
+fun ItemHero(superhero: Superhero) {
+
+    Card (
+        border = BorderStroke(2.dp, Color.Red),
+        modifier = Modifier
+            .width(200.dp)
+    ){
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ){
+
+            Image(
+                painter = painterResource(id = superhero.photo),
+                contentDescription = null,
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.Crop)
+            Text(text = superhero.superheroName, fontSize = 20.sp)
+            Text(text = superhero.realName, fontSize = 15.sp)
+            Row(
+                horizontalArrangement = Arrangement.End
+            ){
+                Text(
+                    text = superhero.publisher,
+                    fontSize = 10.sp,
+                    modifier = Modifier
+                        .padding(bottom = 5.dp))
+            }
+           
         }
     }
+
 }
+
 
 
